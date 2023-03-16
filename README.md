@@ -1,7 +1,7 @@
 # Getting Started with Create React App
 
-This project can be found at (https://github.com/myusma/final-project).
-### `git clone https://github.com/myusma/final-project`
+This project can be found at (https://github.com/myusma/eind-opdracht-frontend).
+### `git clone https://github.com/myusma/eind-opdracht-frontend
 
 
 ## Available Scripts
