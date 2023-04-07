@@ -2,6 +2,9 @@ import React, {useContext, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {AuthContext} from "../../context/AuthContext";
 import axios from "axios";
+import SubmitButton from "../../components/submitButton/SubmitButton";
+import InputField from "../../components/inputField/InputField";
+import Footer from "../../components/footer/Footer";
 
 function SignIn() {
 
@@ -12,10 +15,8 @@ function SignIn() {
     console.log(username)
 
 
-
     async function handleLogin(e) {
         e.preventDefault()
-
 
 
         try {
@@ -45,36 +46,34 @@ function SignIn() {
             <form onSubmit={handleLogin}>
                 <div>
 
-
-                    <label htmlFor="username">Username : </label>
-                    <input
+                    <InputField
+                        label="Username :"
                         type="text"
                         name="username"
                         id="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
-                    <div>
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </div>
+                    <InputField
+                        label="Password:"
+                        type="password"
+                        name="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+
 
                 </div>
-                <button type="submit">Signin</button>
-                <br/>
-                {/*{errorEmail && <h4>{errorEmail}</h4>}*/}
-                {/*{errorLogin && <h4>{errorLogin}</h4>}*/}
+
+                <SubmitButton label="Submit"/>
 
             </form>
 
             <p>Don´t you have an account yet? Click on <Link to="/signup">Signup</Link> to register.</p>
             <p>Back to the <Link to="/">Homepage</Link></p>
+
+            <Footer/>
         </>
     );
 }

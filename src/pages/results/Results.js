@@ -2,6 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import './Results.css'
+import Footer from "../../components/footer/Footer";
+import Loading from "../../components/loading/Loading";
+import ErrorComponent from "../../components/error/Error";
+import Button from "../../components/button/Button";
 
 
 function Results() {
@@ -37,16 +41,21 @@ function Results() {
 
                     },
                     headers: {
-                        'X-RapidAPI-Key': '4a367b4839msh23344a1d9c33524p11387ejsn9babf130d38c',
+                        'X-RapidAPI-Key': '3dc367959bmshe617c7f249a9921p131658jsnf0b16260c3b4',
                         'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
                     }
 
                 });
                 console.log("acd", response.data.result)
                 setHotelList(response.data.result)
-            } catch (error) {
-                console.error(error)
+            } catch (e) {
                 setError(true)
+
+                if (axios.isCancel(e)) {
+                    console.log('The axios request was cancelled')
+                } else {
+                    console.error(e)
+                }
             } finally {
                 setLoading(false)
             }
@@ -75,51 +84,54 @@ function Results() {
     }
 
     return (
-        <>
-            <div>
-                <button onClick={() => {
-                    selectByPrice()
-                }}>
-                    Select by price
+        <main>
+            <section>
 
-                </button>
-            </div>
+                <Button
+                onClick={selectByPrice}
+                text="Select by price"
+                />
 
-            <div>
+            </section>
 
+            <section>
 
-                {loading && <p>Loading...</p>}
-                {error && <p>Error: Could not fetch data!</p>}
+                {loading && <Loading />}
+                {error && <ErrorComponent message="Could not fetch data!" />}
 
                 {hotelList.map((hotel) => {
                     return (
-
-                        <div className='container' onClick={() => {
-                            navigate('/details/' + hotel.hotel_id)
-                        }} key={hotel.hotel_id}>
-
-
-                            <div className='fotoContainer'>
-                                <img className='foto' src={hotel.max_photo_url}/>
+                        <article
+                            className='container'
+                            onClick={() => {
+                                navigate('/details/' + hotel.hotel_id);
+                            }}
+                            key={hotel.hotel_id}
+                        >
+                            <div className='foto-container'>
+                                <img className='foto' src={hotel.max_photo_url} alt='photos' />
                             </div>
 
-                            <div className='contentContainer'>
-                                <h3>{hotel.hotel_name}</h3>
-                                <h3> {hotel.address}</h3>
+                            <div className='content-container'>
+                                <h2>{hotel.hotel_name}</h2>
+                                <h3>{hotel.address}</h3>
                                 <h3>{hotel.city_trans}</h3>
-                                <h3>Total Price : {hotel.min_total_price.toFixed(2)}{hotel.currencycode}</h3>
-                                <b>Score: {hotel.review_score}</b>
-
+                                <h2>Total Price : {hotel.min_total_price.toFixed(2)}{hotel.currencycode}</h2>
+                                <h3>Score: {hotel.review_score}</h3>
                             </div>
-
-                        </div>
-                    )
+                        </article>
+                    );
                 })}
-            </div>
+            </section>
 
+            <nav>
+                <p>
+                    Back to the <Link to='/'>Homepage</Link>
+                </p>
+            </nav>
 
-            <p>Terug naar de <Link to="/">Homepagina</Link></p>
-        </>
+            <Footer />
+        </main>
     );
 }
 

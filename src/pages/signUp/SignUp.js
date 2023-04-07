@@ -1,15 +1,18 @@
 import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
+import SubmitButton from "../../components/submitButton/SubmitButton";
+import InputField from "../../components/inputField/InputField";
+import Footer from "../../components/footer/Footer";
 
 function SignUp() {
     const [username,setUsername]= useState('')
     const [password,setPassword]= useState('')
     const [email,setEmail]= useState('')
-    const [errorEmail, setErrorEmail] = useState(null)
-    const [errorPassword, setErrorPassword] = useState(null)
-    const [errorUsername, setErrorUsername] =useState(null)
-    const [ errorSignUp, setErrorSignUp] = useState(null)
+    const [errorEmail, setErrorEmail] = useState(false)
+    const [errorPassword, setErrorPassword] = useState(false)
+    const [errorUsername, setErrorUsername] =useState(false)
+    const [errorSignUp, setErrorSignUp] = useState(false)
     const navigate = useNavigate()
 
     function validateSignUp() {
@@ -19,21 +22,21 @@ function SignUp() {
             setErrorUsername('username should be min. 3 digits')
             errorCount++
         } else {
-            setErrorUsername(null);
+            setErrorUsername(false);
         }
 
         if (!/\S+@\S+\.\S+/.test(email)) {
             setErrorEmail("Email is invalid");
             errorCount++;
         } else {
-            setErrorEmail(null);
+            setErrorEmail(false);
         }
 
         if (password.length < 6) {
             setErrorPassword("password should be min. 3 digits");
             errorCount++
         } else {
-            setErrorPassword(null);
+            setErrorPassword(false);
         }
         if (errorCount > 0) {
             return false
@@ -71,37 +74,35 @@ function SignUp() {
 
 
             <form onSubmit={handleSingUp}>
-                <label htmlFor="username">Username : </label>
-                <input
+
+                <InputField
+                    label="Username :"
                     type="text"
                     name="username"
                     id="username"
                     value={username}
-                    onChange={(e)=> setUsername(e.target.value)}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
-                <label htmlFor="email">Email : </label>
-                <input
+                <InputField
+                    label="Email :"
                     type="text"
                     name="email"
                     id="email"
                     value={email}
-                    onChange={(e)=> setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     required={true}
-
                 />
-                <label htmlFor="password">Password : </label>
-                <input
+                <InputField
+                    label="Password :"
                     type="password"
                     name="password"
                     id="password"
                     value={password}
-                    onChange={(e)=> setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     required={true}
-
                 />
 
-
-                <button type="submit" >Submit</button>
+                <SubmitButton label="Submit"  />
                 <br/>
                 {errorEmail && <h4>{errorEmail}</h4>}
                 {errorUsername && <h4>{errorUsername}</h4>}
@@ -111,6 +112,8 @@ function SignUp() {
 
             <p>Already have an account? Click on <Link to="/signin">Signin</Link> to log in.</p>
             <p>Back to the <Link to="/">Homepage</Link></p>
+
+            <Footer />
         </>
     );
 }

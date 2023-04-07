@@ -12,19 +12,18 @@
     margin: 10px;
     background-color: #F3F6F9;
 
+
 }
-.fotoContainer{
+.foto-container{
 
     display: flex;
 
 
-
 }
 
-.contentContainer{
+.content-container{
     display: flex;
     flex-direction: column;
-
     margin-left: 50px;
 
 }

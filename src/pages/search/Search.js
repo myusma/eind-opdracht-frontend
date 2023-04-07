@@ -2,17 +2,30 @@ import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
 import './Search.css'
+import Footer from "../../components/footer/Footer";
+import InputField from "../../components/inputField/InputField";
+import SubmitButton from "../../components/submitButton/SubmitButton";
+import Loading from "../../components/loading/Loading";
+import ErrorComponent from "../../components/error/Error";
+import Button from "../../components/button/Button";
 
 function Search() {
     const navigate = useNavigate()
-    const [formValues, setFormValues] = useState({})
+    const [formValues, setFormValues] = useState({
+        checkinDate: "",
+        checkoutDate: "",
+        numberOfGuest: ""
+    })
+
     const [citySearch, setCitySearch] = useState('')
     const [cityList, setCityList] = useState([])
     const [selectedCityList, setSelectedCityList] = useState([])
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
 
-    function handleRemoveCityItem (index){
+    function handleRemoveCityItem(index) {
         const temp = [...selectedCityList]
-        temp.splice(index,1)
+        temp.splice(index, 1)
         setSelectedCityList(temp)
     }
 
@@ -22,22 +35,48 @@ function Search() {
     }, [citySearch])
 
 
-    const searchCity = async (text) => {
-        const response = await axios.get('https://booking-com.p.rapidapi.com/v1/hotels/locations', {
-            params: {name: text, locale: 'en-gb'},
-            headers: {
-                'X-RapidAPI-Key': '4a367b4839msh23344a1d9c33524p11387ejsn9babf130d38c',
-                'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+    async function searchCity(text) {
+        if (!text) {
+            return;
+        }
+        try {
+            setError(false);
+            setLoading(true);
+
+            const response = await axios.get('https://booking-com.p.rapidapi.com/v1/hotels/locations',
+                {
+                    params: {
+                        name: text,
+                        locale: 'en-gb'
+                    },
+
+                    headers: {
+                        'X-RapidAPI-Key': "3dc367959bmshe617c7f249a9921p131658jsnf0b16260c3b4",
+                        'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+                    }
+                });
+            console.log('search', response.data)
+            setCityList(response.data.map((record) => ({
+                destId: record.dest_id,
+                name: record.name
+
+            })))
+        } catch (e) {
+            setError(true);
+
+            if (axios.isCancel(e)) {
+                console.log("The axios request was cancelled");
+            } else {
+                console.error(e.message); // toont alleen de foutmelding
             }
-        });
-        console.log('search', response.data)
-        setCityList(response.data.map((record) => ({
-            destId: record.dest_id,
-            name: record.name
-        })))
+        }
+        setLoading(false);
+
     }
 
-    const handleInputChange = (e) => {
+
+    let handleInputChange;
+    handleInputChange = (e) => {
         setFormValues({...formValues, [e.target.name]: e.target.value})
     }
 
@@ -60,67 +99,102 @@ function Search() {
 
     return (
         <>
-            <div className='search'>
-
-                <h1>Search Page</h1>
-
-
-                {selectedCityList.map((city,index) =>
-                    <div className='cityListItem' key={index}>
-                        <p>{city.name}</p>
-                        <button className='cityListItemButton' onClick={()=>handleRemoveCityItem(index)}>X</button>
-                    </div>)}
-
-                <form onSubmit={handleFormSubmit}>
-
-                    <label htmlFor="city">City </label>
-                    <input
-                        type="text"
-                        value={citySearch}
-                        onChange={(e) => setCitySearch(e.target.value)}
-                    />
-
-                    {cityList.map((city) => <p
-                        onClick={() => {
-                            setSelectedCityList([...selectedCityList, {
-                                name: city.name,
-                                destId: city.destId
-                            }])
-                            setCitySearch('')
-                            setCityList([])
-                        }}>{city.name}</p>)}
+            <main>
+                {loading && <Loading />}
+                {error && <ErrorComponent message="Could not fetch data!" />}
 
 
-                    <label htmlFor="numberOfGuest">Number of guest:</label>
-                    <input
-                        type="number"
-                        name="numberOfGuest"
-                        value={formValues.numberOfGuest}
-                        onChange={handleInputChange}
-                    />
-                    <label htmlFor="checkinDate">Entry Date:</label>
-                    <input
-                        type="date"
-                        name="checkinDate"
-                        value={formValues.checkinDate}
-                        onChange={handleInputChange}
-                    />
-                    <label htmlFor="checkoutDate">Checkout Date:</label>
-                    <input
-                        type="date"
-                        name="checkoutDate"
-                        value={formValues.checkoutDate}
-                        onChange={handleInputChange}
-                    />
+                <div className='search'>
 
-                    <button type="submit">Search</button>
-
-                </form>
+                    <header>
+                        <h1>Search Page</h1>
+                    </header>
 
 
-                <p>Back to the <Link to="/">Homepage</Link></p>
-            </div>
+                    {selectedCityList.map((city) =>
+                        <div className='city-list-item'
+                             key={city.name}>
+
+                            <p>{city.name}</p>
+
+
+                            <Button
+                            className="city-list-item-button"
+                            onClick={() => handleRemoveCityItem(city.id)}
+                            text="X"
+                            />
+
+
+                        </div>)}
+
+                    <form onSubmit={handleFormSubmit}>
+                        <div>
+                            <InputField
+                                label="City"
+                                type="text"
+                                name="city"
+                                id="city"
+                                value={citySearch}
+                                onChange={(e) => setCitySearch(e.target.value)}
+                            />
+                            {cityList.map((city) => (
+                                <p key={city.destId}
+                                   onClick={() => {
+                                       setSelectedCityList([...selectedCityList, {
+                                           name: city.name,
+                                           destId: city.destId
+                                       }])
+                                       setCitySearch('')
+                                       setCityList([])
+                                   }}>
+                                    {city.name}
+                                </p>
+                            ))}
+                        </div>
+                        <div>
+                            <InputField
+                                label="Number of guest"
+                                type="number"
+                                name="numberOfGuest"
+                                id="numberOfGuest"
+                                value={formValues.numberOfGuest}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div>
+                            <InputField
+                                label="Entry Date"
+                                type="date"
+                                name="checkinDate"
+                                id="checkinDate"
+                                value={formValues.checkinDate}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div>
+                            <InputField
+                                label="Checkout Date"
+                                type="date"
+                                name="checkoutDate"
+                                id="checkoutDate"
+                                value={formValues.checkoutDate}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                        <SubmitButton label="Submit"/>
+
+                    </form>
+
+
+                    <p>Back to the <Link to="/">Homepage</Link></p>
+                </div>
+
+            </main>
+            <Footer/>
         </>
+
+
     );
 }
 
