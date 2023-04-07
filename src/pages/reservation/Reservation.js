@@ -35,6 +35,7 @@ const Reservation = () => {
                 const data = await response.json();
                 setHotelData(data);
                 console.log("hotel data", data);
+
             } catch (error) {
                 console.error(error);
                 setError(true);

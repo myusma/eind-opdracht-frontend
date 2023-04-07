@@ -95,10 +95,11 @@ function Results() {
                 {hotelList.map((hotel) => {
                     return (
 
-                        <div className='container' onClick={() => {
+                        <div className='container'
+                             onClick={() => {
                             navigate('/details/' + hotel.hotel_id)
-                        }} key={hotel.hotel_id}>
-
+                        }} key={hotel.hotel_id}
+                        >
 
                             <div className='foto-container'>
                                 <img

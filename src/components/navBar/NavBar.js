@@ -39,7 +39,7 @@ function NavBar({ title }) {
                         <SubmitButton
                             label="Signin"
                             className="nav-button"
-                            onClick={handleLogout}
+                            onClick={() => navigate("/signin")}
                         ></SubmitButton>
 
                         <SubmitButton

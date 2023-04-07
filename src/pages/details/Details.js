@@ -74,9 +74,10 @@ function Details() {
                     }
                     >
 
-                        {hotelPhotos.map((slideImage, index) => (<div key={index}>
-                            <div className='div-style' style={{'backgroundImage': `url(${slideImage?.url_1440})`}}></div>
-                        </div>))}
+                        {hotelPhotos.map((slideImage, index) => {
+                            return<div className='div-style' key={index}
+                                       style={{'backgroundImage': `url(${slideImage?.url_1440})`}}></div>
+                        })}
 
                     </Slide>
 
@@ -84,16 +85,18 @@ function Details() {
 
 
             <div className='item-container'>
-                {hotelPhotos?.map((item) => {
+                {hotelPhotos?.map((f, index) => {
                     return (
 
                         <img
+                            key={index}
                             onClick={() => {
                             setDialogOpen(true)
-                            setDialogImageSrc(item?.url_1440)
-                        }} className='photo-items'
-                            src={item.url_1440}
-                            alt="hotel-photos"/>
+                            setDialogImageSrc(f?.url_1440)
+                        }}
+                            className='photo-items'
+                            src={f.url_1440}
+                            alt="kamers"/>
                     )
                 })}
             </div>
@@ -106,10 +109,9 @@ function Details() {
             <div>
                 <b>Facilities:</b>
                 <ul className='facilities'>
-                    {hotelFacilities?.map((item) => {
+                    {hotelFacilities?.map((item, index) => {
                         return (
-
-                            <li>{item.facility_name}</li>
+                            <li key={index}>{item.facility_name}</li>
 
                         )
                     })}
@@ -120,11 +122,13 @@ function Details() {
 
                 <div className='dialog-content'>
                     <div className= 'dialog-top-area'>
+
                         <button
                             type="button"
                             onClick={()=>{setDialogOpen(false)}}>
                             X
                         </button>
+
                     </div>
 
                     <div className='dialog-bottom-area'>

@@ -8,10 +8,17 @@ import SubmitButton from "../../components/button/SubmitButton";
 
 function Search() {
     const navigate = useNavigate()
-    const [formValues, setFormValues] = useState({})
+    const [formValues, setFormValues] = useState({
+        checkinDate: "",
+        checkoutDate: "",
+        numberOfGuest: ""
+    })
+
     const [citySearch, setCitySearch] = useState('')
     const [cityList, setCityList] = useState([])
     const [selectedCityList, setSelectedCityList] = useState([])
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     function handleRemoveCityItem (index){
         const temp = [...selectedCityList]
@@ -25,22 +32,47 @@ function Search() {
     }, [citySearch])
 
 
-    const searchCity = async (text) => {
-        const response = await axios.get('https://booking-com.p.rapidapi.com/v1/hotels/locations', {
-            params: {name: text, locale: 'en-gb'},
-            headers: {
-                'X-RapidAPI-Key': '0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4',
-                'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+    async function searchCity(text) {
+        if (!text) {
+            return;
+        }
+        try {
+            setError(false);
+            setLoading(true);
+
+            const response = await axios.get('https://booking-com.p.rapidapi.com/v1/hotels/locations',
+                {
+                    params: {
+                        name: text,
+                        locale: 'en-gb'},
+
+                    headers: {
+                        'X-RapidAPI-Key': "0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4",
+                        'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+                    }
+                });
+            console.log('search', response.data)
+            setCityList(response.data.map((record) => ({
+                destId: record.dest_id,
+                name: record.name
+
+            })))
+        }catch (e) {
+            setError(true);
+
+            if (axios.isCancel(e)) {
+                console.log("The axios request was cancelled");
+            } else {
+                console.error(e.message); // toont alleen de foutmelding
             }
-        });
-        console.log('search', response.data)
-        setCityList(response.data.map((record) => ({
-            destId: record.dest_id,
-            name: record.name
-        })))
+        }
+        setLoading( false );
+
     }
 
-    const handleInputChange = (e) => {
+
+    let handleInputChange;
+    handleInputChange = (e) => {
         setFormValues({...formValues, [e.target.name]: e.target.value})
     }
 
@@ -63,19 +95,26 @@ function Search() {
 
     return (
         <>
+
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: Could not fetch data!</p>}
+
+
             <div className='search'>
 
                 <h1>Search Page</h1>
 
 
-                {selectedCityList.map((city,index) =>
-                    <div className='city-list-item' key={index}>
+                {selectedCityList.map((city) =>
+                    <div className='city-list-item'
+                         key={city.name}>
+
                         <p>{city.name}</p>
 
                         <button
                             type="button"
                             className='city-list-item-button'
-                            onClick={()=>handleRemoveCityItem(index)}>
+                            onClick={()=>handleRemoveCityItem(city.id)}>
                             X
                         </button>
 
