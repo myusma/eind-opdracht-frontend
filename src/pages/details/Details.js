@@ -29,7 +29,7 @@ function Details() {
                     url: 'https://booking-com.p.rapidapi.com/v1/hotels/data',
                     params: {locale: 'en-gb', hotel_id: id},
                     headers: {
-                        'X-RapidAPI-Key': '4a367b4839msh23344a1d9c33524p11387ejsn9babf130d38c',
+                        'X-RapidAPI-Key': '0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4',
                         'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
                     }
                 };
@@ -105,27 +105,27 @@ function Details() {
             {error && <p>Error: Could not fetch data!</p>}
 
             {hotelPhotos.length > 0 &&
-                <div className="slide-container">
+                <div>
                     <Slide
                         nextArrow={<button className='arrowButton nextArrow'>⮕</button>}
                         prevArrow={<button className='arrowButton prevArrow'>⬅</button>}
                     >
 
                         {hotelPhotos.map((slideImage, index) => (<div key={index}>
-                            <div className='divStyle' style={{'backgroundImage': `url(${slideImage?.url_1440})`}}></div>
+                            <div className='div-style' style={{'backgroundImage': `url(${slideImage?.url_1440})`}}></div>
                         </div>))}
                     </Slide>
                 </div>}
 
 
-            <div className='itemContainer'>
+            <div className='item-container'>
                 {hotelPhotos?.map((item) => {
                     return (
 
                         <img onClick={() => {
                             setDialogOpen(true)
                             setDialogImageSrc(item?.url_1440)
-                        }} className='photoItems' src={item.url_1440}/>
+                        }} className='photo-items' src={item.url_1440}/>
                     )
                 })}
             </div>
@@ -141,7 +141,7 @@ function Details() {
                     {hotelFacilities?.map((item) => {
                         return (
 
-                            <li className='innerFacilities'>{item.facility_name}</li>
+                            <li>{item.facility_name}</li>
 
                         )
                     })}
@@ -150,21 +150,24 @@ function Details() {
 
             <dialog className='dialog' open={dialogOpen ? true : false}>
 
-                <div className='dialogContent'>
-                    <div className= 'dialogContentTopArea'>
-                        <button onClick={()=>{setDialogOpen(false)}}>X</button>
+                <div className='dialog-content'>
+                    <div className= 'dialog-top-area'>
+                        <button
+                            onClick={()=>{setDialogOpen(false)}}>
+                            X
+                        </button>
                     </div>
 
-                    <div className='dialogContentBottomArea'>
-                        <img className='hotelBigImage' src={dialogImageSrc}/>
+                    <div className='dialog-bottom-area'>
+                        <img className='hotel-big-image' src={dialogImageSrc}/>
                     </div>
                 </div>
 
             </dialog>
 
-            <div className="reservationArea">
-                <div className="reservationButtonContainer">
-                    <button className="reservationButton" onClick={() => {
+            <div className="reservation-area">
+                <div className="reservation-button-container">
+                    <button className="reservation-button" onClick={() => {
                         navigate('/reservation/' + id)
                     }}>Book now
                     </button>

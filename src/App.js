@@ -6,7 +6,7 @@ import Home from './pages/home/Home';
 import SignIn from './pages/signIn/SignIn';
 import SignUp from './pages/signUp/SignUp';
 import Search from './pages/search/Search'
-import Details from './pages/Details/Details'
+import Details from './pages/details/Details'
 import './App.css';
 import {AuthContext} from "./context/AuthContext";
 import Reservation from "./pages/reservation/Reservation";

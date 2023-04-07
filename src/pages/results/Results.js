@@ -37,7 +37,7 @@ function Results() {
 
                     },
                     headers: {
-                        'X-RapidAPI-Key': '4a367b4839msh23344a1d9c33524p11387ejsn9babf130d38c',
+                        'X-RapidAPI-Key': '0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4',
                         'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
                     }
 
@@ -99,11 +99,11 @@ function Results() {
                         }} key={hotel.hotel_id}>
 
 
-                            <div className='fotoContainer'>
+                            <div className='foto-container'>
                                 <img className='foto' src={hotel.max_photo_url}/>
                             </div>
 
-                            <div className='contentContainer'>
+                            <div className='content-container'>
                                 <h3>{hotel.hotel_name}</h3>
                                 <h3> {hotel.address}</h3>
                                 <h3>{hotel.city_trans}</h3>

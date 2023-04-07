@@ -20,7 +20,7 @@ const Reservation = () => {
                 url: "https://booking-com.p.rapidapi.com/v1/hotels/data",
                 params: {locale: "en-gb", hotel_id: id},
                 headers: {
-                    "X-RapidAPI-Key": "4a367b4839msh23344a1d9c33524p11387ejsn9babf130d38c",
+                    "X-RapidAPI-Key": "0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4",
                     "X-RapidAPI-Host": "booking-com.p.rapidapi.com",
                 },
             };
@@ -55,12 +55,12 @@ const Reservation = () => {
 
     return (
 
-        <div className='paymentContainer'>
+        <div className='payment-container'>
             <div>
                 <h2>{hotelData?.name}</h2>
                 Bank Account Number :
                 <input
-                type='text' onChange={(e) => setBankAccountNumber(e.target.value)}>
+                    type='text' onChange={(e) => setBankAccountNumber(e.target.value)}>
                 </input>
                 <br/>
                 <br/>

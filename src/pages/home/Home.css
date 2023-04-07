@@ -1,16 +1,10 @@
-.outerContainerFotoHome {
+.container-foto {
     display: flex;
     flex-direction: row;
 
 }
-.fotoHome{
+.foto-home{
 
     width: 360px;
     height: 200px;
-}
-
-.contentHome{
-
-
-
 }

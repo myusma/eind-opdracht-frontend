@@ -26,7 +26,7 @@ function Search() {
         const response = await axios.get('https://booking-com.p.rapidapi.com/v1/hotels/locations', {
             params: {name: text, locale: 'en-gb'},
             headers: {
-                'X-RapidAPI-Key': '4a367b4839msh23344a1d9c33524p11387ejsn9babf130d38c',
+                'X-RapidAPI-Key': '0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4',
                 'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
             }
         });
@@ -66,9 +66,9 @@ function Search() {
 
 
                 {selectedCityList.map((city,index) =>
-                    <div className='cityListItem' key={index}>
+                    <div className='city-list-item' key={index}>
                         <p>{city.name}</p>
-                        <button className='cityListItemButton' onClick={()=>handleRemoveCityItem(index)}>X</button>
+                        <button className='city-list-item-button' onClick={()=>handleRemoveCityItem(index)}>X</button>
                     </div>)}
 
                 <form onSubmit={handleFormSubmit}>
