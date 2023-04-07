@@ -7,7 +7,7 @@ button {
   font-weight: bold;
 
 }.nav-button{
-   width: 120px;
+   flex-basis: 120px;
 
  }
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
-import SubmitButton from "../../components/button/SubmitButton";
+import SubmitButton from "../../components/submitButton/SubmitButton";
 import InputField from "../../components/inputField/InputField";
 import Footer from "../../components/footer/Footer";
 
@@ -9,10 +9,10 @@ function SignUp() {
     const [username,setUsername]= useState('')
     const [password,setPassword]= useState('')
     const [email,setEmail]= useState('')
-    const [errorEmail, setErrorEmail] = useState(null)
-    const [errorPassword, setErrorPassword] = useState(null)
-    const [errorUsername, setErrorUsername] =useState(null)
-    const [ errorSignUp, setErrorSignUp] = useState(null)
+    const [errorEmail, setErrorEmail] = useState(false)
+    const [errorPassword, setErrorPassword] = useState(false)
+    const [errorUsername, setErrorUsername] =useState(false)
+    const [errorSignUp, setErrorSignUp] = useState(false)
     const navigate = useNavigate()
 
     function validateSignUp() {
@@ -22,21 +22,21 @@ function SignUp() {
             setErrorUsername('username should be min. 3 digits')
             errorCount++
         } else {
-            setErrorUsername(null);
+            setErrorUsername(false);
         }
 
         if (!/\S+@\S+\.\S+/.test(email)) {
             setErrorEmail("Email is invalid");
             errorCount++;
         } else {
-            setErrorEmail(null);
+            setErrorEmail(false);
         }
 
         if (password.length < 6) {
             setErrorPassword("password should be min. 3 digits");
             errorCount++
         } else {
-            setErrorPassword(null);
+            setErrorPassword(false);
         }
         if (errorCount > 0) {
             return false

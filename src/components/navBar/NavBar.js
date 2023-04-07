@@ -2,7 +2,7 @@ import logo from '../../assets/hotel-icon-symbol-sign.jpg';
 import React, {useContext} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
-import SubmitButton from "../button/SubmitButton";
+import SubmitButton from "../submitButton/SubmitButton";
 
 
 function NavBar({ title }) {

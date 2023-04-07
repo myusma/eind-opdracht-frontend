@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {AuthContext} from "../../context/AuthContext";
 import axios from "axios";
-import SubmitButton from "../../components/button/SubmitButton";
+import SubmitButton from "../../components/submitButton/SubmitButton";
 import InputField from "../../components/inputField/InputField";
 import Footer from "../../components/footer/Footer";
 

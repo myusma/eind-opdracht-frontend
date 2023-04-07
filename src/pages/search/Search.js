@@ -4,7 +4,10 @@ import axios from "axios";
 import './Search.css'
 import Footer from "../../components/footer/Footer";
 import InputField from "../../components/inputField/InputField";
-import SubmitButton from "../../components/button/SubmitButton";
+import SubmitButton from "../../components/submitButton/SubmitButton";
+import Loading from "../../components/loading/Loading";
+import ErrorComponent from "../../components/error/Error";
+import Button from "../../components/button/Button";
 
 function Search() {
     const navigate = useNavigate()
@@ -20,9 +23,9 @@ function Search() {
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    function handleRemoveCityItem (index){
+    function handleRemoveCityItem(index) {
         const temp = [...selectedCityList]
-        temp.splice(index,1)
+        temp.splice(index, 1)
         setSelectedCityList(temp)
     }
 
@@ -44,10 +47,11 @@ function Search() {
                 {
                     params: {
                         name: text,
-                        locale: 'en-gb'},
+                        locale: 'en-gb'
+                    },
 
                     headers: {
-                        'X-RapidAPI-Key': "0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4",
+                        'X-RapidAPI-Key': "3dc367959bmshe617c7f249a9921p131658jsnf0b16260c3b4",
                         'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
                     }
                 });
@@ -57,7 +61,7 @@ function Search() {
                 name: record.name
 
             })))
-        }catch (e) {
+        } catch (e) {
             setError(true);
 
             if (axios.isCancel(e)) {
@@ -66,7 +70,7 @@ function Search() {
                 console.error(e.message); // toont alleen de foutmelding
             }
         }
-        setLoading( false );
+        setLoading(false);
 
     }
 
@@ -95,94 +99,98 @@ function Search() {
 
     return (
         <>
-
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: Could not fetch data!</p>}
-
-
-            <div className='search'>
-
-                <h1>Search Page</h1>
+            <main>
+                {loading && <Loading />}
+                {error && <ErrorComponent message="Could not fetch data!" />}
 
 
-                {selectedCityList.map((city) =>
-                    <div className='city-list-item'
-                         key={city.name}>
+                <div className='search'>
 
-                        <p>{city.name}</p>
-
-                        <button
-                            type="button"
-                            className='city-list-item-button'
-                            onClick={()=>handleRemoveCityItem(city.id)}>
-                            X
-                        </button>
-
-                    </div>)}
-
-                <form onSubmit={handleFormSubmit}>
-                    <div>
-                        <InputField
-                            label="City"
-                            type="text"
-                            name="city"
-                            id="city"
-                            value={citySearch}
-                            onChange={(e) => setCitySearch(e.target.value)}
-                        />
-                        {cityList.map((city) => (
-                            <p key={city.destId}
-                               onClick={() => {
-                                   setSelectedCityList([...selectedCityList, {
-                                       name: city.name,
-                                       destId: city.destId
-                                   }])
-                                   setCitySearch('')
-                                   setCityList([])
-                               }}>
-                                {city.name}
-                            </p>
-                        ))}
-                    </div>
-                    <div>
-                        <InputField
-                            label="Number of guest"
-                            type="number"
-                            name="numberOfGuest"
-                            id="numberOfGuest"
-                            value={formValues.numberOfGuest}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div>
-                        <InputField
-                            label="Entry Date"
-                            type="date"
-                            name="checkinDate"
-                            id="checkinDate"
-                            value={formValues.checkinDate}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div>
-                        <InputField
-                            label="Checkout Date"
-                            type="date"
-                            name="checkoutDate"
-                            id="checkoutDate"
-                            value={formValues.checkoutDate}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-
-                    <SubmitButton label="Submit" />
-
-                </form>
+                    <header>
+                        <h1>Search Page</h1>
+                    </header>
 
 
-                <p>Back to the <Link to="/">Homepage</Link></p>
-            </div>
+                    {selectedCityList.map((city) =>
+                        <div className='city-list-item'
+                             key={city.name}>
 
+                            <p>{city.name}</p>
+
+
+                            <Button
+                            className="city-list-item-button"
+                            onClick={() => handleRemoveCityItem(city.id)}
+                            text="X"
+                            />
+
+
+                        </div>)}
+
+                    <form onSubmit={handleFormSubmit}>
+                        <div>
+                            <InputField
+                                label="City"
+                                type="text"
+                                name="city"
+                                id="city"
+                                value={citySearch}
+                                onChange={(e) => setCitySearch(e.target.value)}
+                            />
+                            {cityList.map((city) => (
+                                <p key={city.destId}
+                                   onClick={() => {
+                                       setSelectedCityList([...selectedCityList, {
+                                           name: city.name,
+                                           destId: city.destId
+                                       }])
+                                       setCitySearch('')
+                                       setCityList([])
+                                   }}>
+                                    {city.name}
+                                </p>
+                            ))}
+                        </div>
+                        <div>
+                            <InputField
+                                label="Number of guest"
+                                type="number"
+                                name="numberOfGuest"
+                                id="numberOfGuest"
+                                value={formValues.numberOfGuest}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div>
+                            <InputField
+                                label="Entry Date"
+                                type="date"
+                                name="checkinDate"
+                                id="checkinDate"
+                                value={formValues.checkinDate}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div>
+                            <InputField
+                                label="Checkout Date"
+                                type="date"
+                                name="checkoutDate"
+                                id="checkoutDate"
+                                value={formValues.checkoutDate}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                        <SubmitButton label="Submit"/>
+
+                    </form>
+
+
+                    <p>Back to the <Link to="/">Homepage</Link></p>
+                </div>
+
+            </main>
             <Footer/>
         </>
 

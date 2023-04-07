@@ -10,9 +10,9 @@ Required:
 
 • Node.js
 
-• Web storm
+• Webstorm
 
-• API key: X-RapidAPI-Key': 0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4
+• API key: X-RapidAPI-Key': 3dc367959bmshe617c7f249a9921p131658jsnf0b16260c3b4
 
 
 

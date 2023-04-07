@@ -2,17 +2,19 @@ import './Reservation.css'
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import axios from "axios";
-import SubmitButton from "../../components/button/SubmitButton";
+import SubmitButton from "../../components/submitButton/SubmitButton";
 import Footer from "../../components/footer/Footer";
-import InputField from "../../components/inputField/InputField";
+import Loading from "../../components/loading/Loading";
+import ErrorComponent from "../../components/error/Error";
+
 
 
 const Reservation = () => {
 
     const {id} = useParams()
     const [hotelData, setHotelData] = useState({})
-    const [errorBankAccount, setErrorBankAccount] = useState(null)
-    const [bankAccountNumber, setBankAccountNumber] = useState(null)
+    const [errorBankAccount, setErrorBankAccount] = useState(false)
+    const [bankAccountNumber, setBankAccountNumber] = useState(false)
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -27,7 +29,7 @@ const Reservation = () => {
                 const response = await fetch(url, {
                     method: "GET",
                     headers: {
-                        "X-RapidAPI-Key": "0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4",
+                        "X-RapidAPI-Key": "3dc367959bmshe617c7f249a9921p131658jsnf0b16260c3b4",
                         "X-RapidAPI-Host": "booking-com.p.rapidapi.com",
                     },
                 });
@@ -36,9 +38,14 @@ const Reservation = () => {
                 setHotelData(data);
                 console.log("hotel data", data);
 
-            } catch (error) {
-                console.error(error);
+            } catch (e) {
                 setError(true);
+
+                if (axios.isCancel(e)) {
+                    console.log('The axios request was cancelled')
+                } else {
+                    console.error(e)
+                }
             } finally {
                 setLoading(false);
             }
@@ -53,7 +60,7 @@ const Reservation = () => {
             if(!expression.test(bankAccountNumber)){
                 setErrorBankAccount('Bankaccount number should have 18 digits')
             }else {
-                setErrorBankAccount(null)
+                setErrorBankAccount(false)
             }
 
         }
@@ -69,11 +76,11 @@ const Reservation = () => {
     return (
         <>
 
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: Could not fetch data!</p>}
+            {loading && <Loading />}
+            {error && <ErrorComponent message="Could not fetch data!" />}
 
 
-        <div className='payment-container'>
+        <main className='payment-container'>
 
             <div>
                 <h2>{hotelData?.name}</h2>
@@ -98,7 +105,7 @@ const Reservation = () => {
 
             <Footer/>
 
-        </div>
+        </main>
 
         </>
     );

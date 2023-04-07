@@ -4,11 +4,15 @@ import {useNavigate, useParams} from "react-router-dom";
 import './Details.css'
 import {Slide} from "react-slideshow-image";
 import 'react-slideshow-image/dist/styles.css'
-import SubmitButton from "../../components/button/SubmitButton";
+import SubmitButton from "../../components/submitButton/SubmitButton";
 import {getHotelDetails} from "../../Helpers/getDetails/GetDetails";
 import {getHotelPhotos} from "../../Helpers/getPhotos/GetPhotos";
 import {getHotelDescription} from "../../Helpers/getDescription/GetDescription";
 import {getHotelFacilities} from "../../Helpers/getFacilities/GetFacilities";
+import Loading from "../../components/loading/Loading";
+import ErrorComponent from "../../components/error/Error";
+import Images from "../../components/img/Images";
+import Button from "../../components/button/Button";
 
 
 function Details() {
@@ -59,24 +63,28 @@ function Details() {
 
     return (
 
-        <div>
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: Could not fetch data!</p>}
+        <main>
+            {loading && <Loading/>}
+            {error && <ErrorComponent message="Could not fetch data!"/>}
 
             {hotelPhotos.length > 0 &&
                 <div>
                     <Slide
                         nextArrow={
-                        <button type="button" className='arrowButton nextArrow'>⮕</button>
-                    }
+
+                             <button type="button" className='arrowButton nextArrow'>⮕</button>
+                        }
                         prevArrow={
-                        <button type="button" className='arrowButton prevArrow'>⬅</button>
-                    }
+
+                            <button type="button" className='arrowButton prevArrow'>⬅</button>
+                        }
                     >
 
                         {hotelPhotos.map((slideImage, index) => {
-                            return<div className='div-style' key={index}
-                                       style={{'backgroundImage': `url(${slideImage?.url_1440})`}}></div>
+                            return <div className='div-style' key={index}
+                                        style={{'backgroundImage': `url(${slideImage?.url_1440})`}}>
+
+                            </div>
                         })}
 
                     </Slide>
@@ -88,12 +96,14 @@ function Details() {
                 {hotelPhotos?.map((f, index) => {
                     return (
 
+
+
                         <img
                             key={index}
                             onClick={() => {
-                            setDialogOpen(true)
-                            setDialogImageSrc(f?.url_1440)
-                        }}
+                                setDialogOpen(true)
+                                setDialogImageSrc(f?.url_1440)
+                            }}
                             className='photo-items'
                             src={f.url_1440}
                             alt="kamers"/>
@@ -121,23 +131,24 @@ function Details() {
             <dialog className='dialog' open={dialogOpen}>
 
                 <div className='dialog-content'>
-                    <div className= 'dialog-top-area'>
+                    <div className='dialog-top-area'>
 
-                        <button
-                            type="button"
-                            onClick={()=>{setDialogOpen(false)}}>
-                            X
-                        </button>
+                        <Button
+                            onClick={() => {
+                                setDialogOpen(false)}}
+                            text="X"
+                        />
 
                     </div>
 
                     <div className='dialog-bottom-area'>
 
-                        <img
-                            className='hotel-big-image'
+                        <Images
                             src={dialogImageSrc}
+                            className="hotel-big-image"
                             alt="hotel-big"
-                        />
+                            />
+
 
                     </div>
                 </div>
@@ -156,7 +167,7 @@ function Details() {
                 </div>
             </div>
 
-        </div>
+        </main>
     );
 }
 
