@@ -15,10 +15,8 @@ function SignIn() {
     console.log(username)
 
 
-
     async function handleLogin(e) {
         e.preventDefault()
-
 
 
         try {
@@ -68,15 +66,14 @@ function SignIn() {
 
                 </div>
 
-                <SubmitButton label="Submit"  />
+                <SubmitButton label="Submit"/>
 
             </form>
 
             <p>Don´t you have an account yet? Click on <Link to="/signup">Signup</Link> to register.</p>
             <p>Back to the <Link to="/">Homepage</Link></p>
 
-            <
-                Footer />
+            <Footer/>
         </>
     );
 }

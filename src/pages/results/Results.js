@@ -101,7 +101,10 @@ function Results() {
 
 
                             <div className='foto-container'>
-                                <img className='foto' src={hotel.max_photo_url}/>
+                                <img
+                                    className='foto'
+                                    src={hotel.max_photo_url}
+                                    alt="photos"/>
                             </div>
 
                             <article className='content-container'>

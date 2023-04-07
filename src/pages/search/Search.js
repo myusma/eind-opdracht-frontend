@@ -71,7 +71,14 @@ function Search() {
                 {selectedCityList.map((city,index) =>
                     <div className='city-list-item' key={index}>
                         <p>{city.name}</p>
-                        <button className='city-list-item-button' onClick={()=>handleRemoveCityItem(index)}>X</button>
+
+                        <button
+                            type="button"
+                            className='city-list-item-button'
+                            onClick={()=>handleRemoveCityItem(index)}>
+                            X
+                        </button>
+
                     </div>)}
 
                 <form onSubmit={handleFormSubmit}>

@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import axios from "axios";
 import SubmitButton from "../../components/button/SubmitButton";
 import Footer from "../../components/footer/Footer";
+import InputField from "../../components/inputField/InputField";
 
 
 const Reservation = () => {
@@ -76,12 +77,19 @@ const Reservation = () => {
             <div>
                 <h2>{hotelData?.name}</h2>
                 Bank Account Number :
+
                 <input
-                    type='text' onChange={(e) => setBankAccountNumber(e.target.value)}>
+                    type='text'
+                    onChange={(e) => setBankAccountNumber(e.target.value)}>
                 </input>
+
                 <br/>
                 <br/>
-                <SubmitButton label="Pay" onClick={() => pay()} />
+
+                <SubmitButton
+                    label="Pay"
+                    onClick={() => pay()}
+                />
 
                 {errorBankAccount && <h4 style={{color: 'red'}}>{errorBankAccount}</h4>}
 

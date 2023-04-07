@@ -67,10 +67,10 @@ function Details() {
                 <div>
                     <Slide
                         nextArrow={
-                        <button className='arrowButton nextArrow'>⮕</button>
+                        <button type="button" className='arrowButton nextArrow'>⮕</button>
                     }
                         prevArrow={
-                        <button className='arrowButton prevArrow'>⬅</button>
+                        <button type="button" className='arrowButton prevArrow'>⬅</button>
                     }
                     >
 
@@ -87,10 +87,13 @@ function Details() {
                 {hotelPhotos?.map((item) => {
                     return (
 
-                        <img onClick={() => {
+                        <img
+                            onClick={() => {
                             setDialogOpen(true)
                             setDialogImageSrc(item?.url_1440)
-                        }} className='photo-items' src={item.url_1440}/>
+                        }} className='photo-items'
+                            src={item.url_1440}
+                            alt="hotel-photos"/>
                     )
                 })}
             </div>
@@ -113,18 +116,25 @@ function Details() {
                 </ul>
             </div>
 
-            <dialog className='dialog' open={dialogOpen ? true : false}>
+            <dialog className='dialog' open={dialogOpen}>
 
                 <div className='dialog-content'>
                     <div className= 'dialog-top-area'>
                         <button
+                            type="button"
                             onClick={()=>{setDialogOpen(false)}}>
                             X
                         </button>
                     </div>
 
                     <div className='dialog-bottom-area'>
-                        <img className='hotel-big-image' src={dialogImageSrc}/>
+
+                        <img
+                            className='hotel-big-image'
+                            src={dialogImageSrc}
+                            alt="hotel-big"
+                        />
+
                     </div>
                 </div>
 
@@ -133,7 +143,9 @@ function Details() {
             <div className="reservation-area">
                 <div className="reservation-button-container">
 
-                    <SubmitButton label="Book now" className="reservation-button" onClick={() => {
+                    <SubmitButton
+                        label="Book now"
+                        className="reservation-button" onClick={() => {
                         navigate('/reservation/' + id)
                     }}/>
 
