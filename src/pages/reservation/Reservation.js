@@ -2,6 +2,8 @@ import './Reservation.css'
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import axios from "axios";
+import SubmitButton from "../../components/button/SubmitButton";
+import Footer from "../../components/footer/Footer";
 
 
 const Reservation = () => {
@@ -10,29 +12,38 @@ const Reservation = () => {
     const [hotelData, setHotelData] = useState({})
     const [errorBankAccount, setErrorBankAccount] = useState(null)
     const [bankAccountNumber, setBankAccountNumber] = useState(null)
-
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        const getDetails = async () => {
+        const getReservation = async () => {
+            try {
+                setError(false);
+                setLoading(true);
 
-            const options = {
-                method: "GET",
-                url: "https://booking-com.p.rapidapi.com/v1/hotels/data",
-                params: {locale: "en-gb", hotel_id: id},
-                headers: {
-                    "X-RapidAPI-Key": "0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4",
-                    "X-RapidAPI-Host": "booking-com.p.rapidapi.com",
-                },
-            };
-            axios.request(options).then(function (response) {
-                setHotelData(response.data)
-                console.log("hotel data", response.data);
-            }).catch(function (error) {
+                const url = `https://booking-com.p.rapidapi.com/v1/hotels/data?locale=en-gb&hotel_id=${id}`;
+
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "X-RapidAPI-Key": "0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4",
+                        "X-RapidAPI-Host": "booking-com.p.rapidapi.com",
+                    },
+                });
+
+                const data = await response.json();
+                setHotelData(data);
+                console.log("hotel data", data);
+            } catch (error) {
                 console.error(error);
-            });
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
         };
-        void getDetails();
-    }, [id])
+
+        void getReservation();
+    }, [id]);
 
     useEffect(()=>{
         function validation(){
@@ -54,8 +65,14 @@ const Reservation = () => {
     }
 
     return (
+        <>
+
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: Could not fetch data!</p>}
+
 
         <div className='payment-container'>
+
             <div>
                 <h2>{hotelData?.name}</h2>
                 Bank Account Number :
@@ -64,10 +81,17 @@ const Reservation = () => {
                 </input>
                 <br/>
                 <br/>
-                <button onClick={() => pay()}>Pay</button>
+                <SubmitButton label="Pay" onClick={() => pay()} />
+
                 {errorBankAccount && <h4 style={{color: 'red'}}>{errorBankAccount}</h4>}
+
             </div>
+
+            <Footer/>
+
         </div>
+
+        </>
     );
 };
 

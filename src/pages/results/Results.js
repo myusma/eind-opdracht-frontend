@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import './Results.css'
+import Footer from "../../components/footer/Footer";
 
 
 function Results() {
@@ -103,14 +104,14 @@ function Results() {
                                 <img className='foto' src={hotel.max_photo_url}/>
                             </div>
 
-                            <div className='content-container'>
+                            <article className='content-container'>
                                 <h3>{hotel.hotel_name}</h3>
                                 <h3> {hotel.address}</h3>
                                 <h3>{hotel.city_trans}</h3>
                                 <h3>Total Price : {hotel.min_total_price.toFixed(2)}{hotel.currencycode}</h3>
                                 <b>Score: {hotel.review_score}</b>
 
-                            </div>
+                            </article>
 
                         </div>
                     )
@@ -119,6 +120,8 @@ function Results() {
 
 
             <p>Terug naar de <Link to="/">Homepagina</Link></p>
+
+            <Footer />
         </>
     );
 }

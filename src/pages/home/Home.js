@@ -9,6 +9,7 @@ import foto6 from '../../assets/foto6.jpg'
 import foto7 from '../../assets/foto7.webp'
 import foto8 from '../../assets/foto8.jpg'
 import './Home.css'
+import Footer from "../../components/footer/Footer";
 
 
 function Home() {
@@ -55,6 +56,7 @@ function Home() {
 
             </header>
 
+            <Footer />
 
         </div>
 

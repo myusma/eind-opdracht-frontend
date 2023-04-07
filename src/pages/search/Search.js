@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
 import './Search.css'
+import Footer from "../../components/footer/Footer";
+import InputField from "../../components/inputField/InputField";
+import SubmitButton from "../../components/button/SubmitButton";
 
 function Search() {
     const navigate = useNavigate()
@@ -72,55 +75,72 @@ function Search() {
                     </div>)}
 
                 <form onSubmit={handleFormSubmit}>
+                    <div>
+                        <InputField
+                            label="City"
+                            type="text"
+                            name="city"
+                            id="city"
+                            value={citySearch}
+                            onChange={(e) => setCitySearch(e.target.value)}
+                        />
+                        {cityList.map((city) => (
+                            <p key={city.destId}
+                               onClick={() => {
+                                   setSelectedCityList([...selectedCityList, {
+                                       name: city.name,
+                                       destId: city.destId
+                                   }])
+                                   setCitySearch('')
+                                   setCityList([])
+                               }}>
+                                {city.name}
+                            </p>
+                        ))}
+                    </div>
+                    <div>
+                        <InputField
+                            label="Number of guest"
+                            type="number"
+                            name="numberOfGuest"
+                            id="numberOfGuest"
+                            value={formValues.numberOfGuest}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div>
+                        <InputField
+                            label="Entry Date"
+                            type="date"
+                            name="checkinDate"
+                            id="checkinDate"
+                            value={formValues.checkinDate}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div>
+                        <InputField
+                            label="Checkout Date"
+                            type="date"
+                            name="checkoutDate"
+                            id="checkoutDate"
+                            value={formValues.checkoutDate}
+                            onChange={handleInputChange}
+                        />
+                    </div>
 
-                    <label htmlFor="city">City </label>
-                    <input
-                        type="text"
-                        value={citySearch}
-                        onChange={(e) => setCitySearch(e.target.value)}
-                    />
-
-                    {cityList.map((city) => <p
-                        onClick={() => {
-                            setSelectedCityList([...selectedCityList, {
-                                name: city.name,
-                                destId: city.destId
-                            }])
-                            setCitySearch('')
-                            setCityList([])
-                        }}>{city.name}</p>)}
-
-
-                    <label htmlFor="numberOfGuest">Number of guest:</label>
-                    <input
-                        type="number"
-                        name="numberOfGuest"
-                        value={formValues.numberOfGuest}
-                        onChange={handleInputChange}
-                    />
-                    <label htmlFor="checkinDate">Entry Date:</label>
-                    <input
-                        type="date"
-                        name="checkinDate"
-                        value={formValues.checkinDate}
-                        onChange={handleInputChange}
-                    />
-                    <label htmlFor="checkoutDate">Checkout Date:</label>
-                    <input
-                        type="date"
-                        name="checkoutDate"
-                        value={formValues.checkoutDate}
-                        onChange={handleInputChange}
-                    />
-
-                    <button type="submit">Search</button>
+                    <SubmitButton label="Submit" />
 
                 </form>
 
 
                 <p>Back to the <Link to="/">Homepage</Link></p>
             </div>
+
+            <Footer/>
         </>
+
+
     );
 }
 

@@ -4,6 +4,11 @@ import {useNavigate, useParams} from "react-router-dom";
 import './Details.css'
 import {Slide} from "react-slideshow-image";
 import 'react-slideshow-image/dist/styles.css'
+import SubmitButton from "../../components/button/SubmitButton";
+import {getHotelDetails} from "../../Helpers/getDetails/GetDetails";
+import {getHotelPhotos} from "../../Helpers/getPhotos/GetPhotos";
+import {getHotelDescription} from "../../Helpers/getDescription/GetDescription";
+import {getHotelFacilities} from "../../Helpers/getFacilities/GetFacilities";
 
 
 function Details() {
@@ -19,81 +24,35 @@ function Details() {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        const getDetails = async () => {
+        async function getDetails() {
+            setLoading(true);
             try {
                 setError(false);
-                setLoading(true);
+                const details = await getHotelDetails(id)
+                setHotelDetail(details)
 
-                const options = {
-                    method: 'GET',
-                    url: 'https://booking-com.p.rapidapi.com/v1/hotels/data',
-                    params: {locale: 'en-gb', hotel_id: id},
-                    headers: {
-                        'X-RapidAPI-Key': '0cc531a7a2msh8cbb54b572e8654p1cbd69jsn55287375b7d4',
-                        'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-                    }
-                };
+                const photos = await getHotelPhotos(id)
+                setHotelPhotos(photos)
 
-                axios.request(options).then(function (response) {
-                    setHotelDetail(response.data)
-                    console.log('info', response.data)
+                const description = await getHotelDescription(id)
+                setHotelDescription(description)
 
-                })
+                const facilities = await getHotelFacilities(id)
+                setHotelFacilities(facilities)
 
-
-                const fotoOptions = {
-                    method: 'GET',
-                    url: 'https://booking-com.p.rapidapi.com/v1/hotels/photos',
-                    params: {hotel_id: id, locale: 'en-gb'},
-                    headers: {
-                        'X-RapidAPI-Key': '4a367b4839msh23344a1d9c33524p11387ejsn9babf130d38c',
-                        'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-                    }
-                };
-
-                axios.request(fotoOptions).then(function (response) {
-                    console.log(response.data);
-                    setHotelPhotos(response.data)
-                })
-
-                const description = {
-                    method: 'GET',
-                    url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
-                    params: {hotel_id: id, locale: 'en-gb'},
-                    headers: {
-                        'X-RapidAPI-Key': '4a367b4839msh23344a1d9c33524p11387ejsn9babf130d38c',
-                        'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-                    }
-                };
-
-                axios.request(description).then(function (response) {
-                    console.log('description', response.data);
-                    setHotelDescription(response.data)
-                })
-
-                const facilities = {
-                    method: 'GET',
-                    url: 'https://booking-com.p.rapidapi.com/v1/hotels/facilities',
-                    params: {hotel_id: id, locale: 'en-gb'},
-                    headers: {
-                        'X-RapidAPI-Key': '4a367b4839msh23344a1d9c33524p11387ejsn9babf130d38c',
-                        'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-                    }
-                };
-
-                axios.request(facilities).then(function (response) {
-                    console.log('facilities', response.data);
-                    setHotelFacilities(response.data)
-                })
-
-            } catch (error) {
-                console.error(error)
+            } catch (e) {
                 setError(true)
-            } finally {
-                setLoading(false)
+
+                if (axios.isCancel(e)) {
+                    console.log('The axios request was cancelled')
+                } else {
+                    console.error(e)
+                }
             }
+            setLoading(false);
 
         }
+
         void getDetails()
 
     }, [])
@@ -107,14 +66,20 @@ function Details() {
             {hotelPhotos.length > 0 &&
                 <div>
                     <Slide
-                        nextArrow={<button className='arrowButton nextArrow'>⮕</button>}
-                        prevArrow={<button className='arrowButton prevArrow'>⬅</button>}
+                        nextArrow={
+                        <button className='arrowButton nextArrow'>⮕</button>
+                    }
+                        prevArrow={
+                        <button className='arrowButton prevArrow'>⬅</button>
+                    }
                     >
 
                         {hotelPhotos.map((slideImage, index) => (<div key={index}>
                             <div className='div-style' style={{'backgroundImage': `url(${slideImage?.url_1440})`}}></div>
                         </div>))}
+
                     </Slide>
+
                 </div>}
 
 
@@ -167,10 +132,11 @@ function Details() {
 
             <div className="reservation-area">
                 <div className="reservation-button-container">
-                    <button className="reservation-button" onClick={() => {
+
+                    <SubmitButton label="Book now" className="reservation-button" onClick={() => {
                         navigate('/reservation/' + id)
-                    }}>Book now
-                    </button>
+                    }}/>
+
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import NavBar from './components/NavBar';
+import NavBar from './components/navBar/NavBar';
 import Results from './pages/results/Results';
 import Home from './pages/home/Home';
 import SignIn from './pages/signIn/SignIn';
@@ -10,6 +10,7 @@ import Details from './pages/details/Details'
 import './App.css';
 import {AuthContext} from "./context/AuthContext";
 import Reservation from "./pages/reservation/Reservation";
+import NotFound from "./pages/notFound/NotFound";
 
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
                     <Route exact path="/signin" element={<SignIn/>}/>
                     <Route exact path="/signup" element={<SignUp/>}/>
                     <Route exact path="/reservation/:id" element={<Reservation/>}/>
-
+                    <Route path="*" element={ <NotFound/> }/>
                 </Routes>
             </div>
         </>
