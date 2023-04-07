@@ -1,14 +1,13 @@
 import logo from '../../assets/hotel-icon-symbol-sign.jpg';
-import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, {useContext} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
+import SubmitButton from "../button/SubmitButton";
 
 
-
-function NavBar() {
+function NavBar({ title }) {
     const { isAuth, logout, user } = useContext(AuthContext);
     const navigate = useNavigate();
-
 
     const handleLogout = () => {
         logout();
@@ -20,7 +19,7 @@ function NavBar() {
             <Link to="/">
         <span className="logo-container">
           <img src={logo} alt="logo" />
-          <h3>SMART TRAVEL</h3>
+          <h3>{title}</h3>
         </span>
             </Link>
 
@@ -28,24 +27,26 @@ function NavBar() {
                 {isAuth ? (
                     <>
                         <span> Welcome {user.username} </span>
-                        <button className="nav-button" onClick={handleLogout}>
-                            Signout
-                        </button>
+
+                        <SubmitButton
+                            label="Signout"
+                            className="nav-button"
+                            onClick={handleLogout}
+                        ></SubmitButton>
                     </>
                 ) : (
                     <>
-                        <button
+                        <SubmitButton
+                            label="Signin"
                             className="nav-button"
-                            onClick={() => navigate("/signin")}
-                        >
-                            Signin
-                        </button>
-                        <button
+                            onClick={handleLogout}
+                        ></SubmitButton>
+
+                        <SubmitButton
+                            label="Signup"
                             className="nav-button"
                             onClick={() => navigate("/signup")}
-                        >
-                            Signup
-                        </button>
+                        ></SubmitButton>
                     </>
                 )}
             </div>
@@ -54,7 +55,6 @@ function NavBar() {
 }
 
 export default NavBar;
-
 
 
 

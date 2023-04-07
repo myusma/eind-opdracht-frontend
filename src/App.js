@@ -20,7 +20,7 @@ function App() {
 
     return (
         <>
-            <NavBar/>
+            <NavBar title="MY APP"></NavBar>
 
             <div className="content">
 
